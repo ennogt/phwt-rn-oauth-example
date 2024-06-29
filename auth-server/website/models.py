@@ -5,6 +5,7 @@ from authlib.integrations.sqla_oauth2 import (
     OAuth2AuthorizationCodeMixin,
     OAuth2TokenMixin,
 )
+from werkzeug.security import check_password_hash
 
 db = SQLAlchemy()
 
@@ -12,6 +13,7 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), unique=True)
+    password_hash = db.Column(db.String(128))
 
     def __str__(self):
         return self.username
@@ -20,7 +22,8 @@ class User(db.Model):
         return self.id
 
     def check_password(self, password):
-        return password == 'valid'
+        print(f"Password hash: {self.password_hash}")
+        return check_password_hash(self.password_hash, password)
 
 
 class OAuth2Client(db.Model, OAuth2ClientMixin):

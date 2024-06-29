@@ -6,7 +6,7 @@ from authlib.integrations.flask_oauth2 import current_token
 from authlib.oauth2 import OAuth2Error
 from .models import db, User, OAuth2Client
 from .oauth2 import authorization, require_oauth
-
+from werkzeug.security import generate_password_hash
 
 bp = Blueprint('home', __name__)
 
@@ -28,10 +28,16 @@ def home():
     if request.method == 'POST':
         username = request.form.get('username')
         user = User.query.filter_by(username=username).first()
+        password = request.form.get('password')
         if not user:
-            user = User(username=username)
+            user = User(
+                username=username,
+                password_hash=generate_password_hash(password)
+                )
             db.session.add(user)
             db.session.commit()
+        elif not user.check_password(password):
+            return 'Invalid username or password'
         session['id'] = user.id
         # if user is not just to log in, but need to head back to the auth page, then go for it
         next_page = request.args.get('next')
