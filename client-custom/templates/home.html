@@ -1,0 +1,16 @@
+<!-- custom -->
+<h1>Client</h1><hr>
+{% if user %}
+<div>
+    Hello, <strong>{{user["username"]}}</strong>! <br>
+    <form action="{{ url_for('.logout') }}" method="post">
+        <input type="submit" value="Log Out">
+</div>
+{% else %}
+<div>
+    Welcome to the <strong>Custom</strong> OAuth example client. <br>
+    <form action="{{ url_for('.login') }}" method="post">
+        <input type="submit" value="Log In with Custom OAuth">
+    </form>
+</div>
+{% endif %}
