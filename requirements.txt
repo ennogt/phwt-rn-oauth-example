@@ -2,3 +2,4 @@ flask
 requests
 Flask-SQLAlchemy
 Authlib
+python-dotenv

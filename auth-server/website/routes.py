@@ -12,6 +12,7 @@ bp = Blueprint('home', __name__)
 
 
 def current_user():
+    print(f"Session: {session}")
     if 'id' in session:
         uid = session['id']
         return User.query.get(uid)
@@ -46,7 +47,7 @@ def home():
     return render_template('home.html', user=user, clients=clients)
 
 
-@bp.route('/logout')
+@bp.route('/logout', methods=['POST'])
 def logout():
     del session['id']
     return redirect('/')
