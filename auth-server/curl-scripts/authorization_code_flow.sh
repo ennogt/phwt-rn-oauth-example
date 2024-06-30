@@ -1,15 +1,28 @@
-client_id="sbHWUpn1SMvw54tel57UagJp"
-client_secret="OofgDPXaeacYY28sk4xRrxLPwdAVTmEwkuav5I6cfPJqgARE"
+# Load variables from .env file
+if [ -f .env ]; then
+  export $(grep -v '^#' .env | xargs)
+else
+  echo ".env file not found!"
+  exit 1
+fi
 
-#open "http://127.0.0.1:5000/oauth/authorize?response_type=code&client_id=${client_id}&scope=profile"
+# Get authorization code
+auth_url="http://127.0.0.1:5000/oauth/authorize?response_type=code&client_id=${CLIENT_ID}&scope=profile&redirect_uri=http://127.0.0.1:5040/callback"
+echo "$auth_url"
+open "$auth_url"
 
+# Wait for the user to copy the code from the URL
+echo "Enter the code:"
+read code
 
-code="z5VG6Wc7t1ZjX5KTFpdD62OnM0DaerYVJRadlc6PmPtAIJwe"
-
-response=$(curl -u ${client_id}:${client_secret} -XPOST http://127.0.0.1:5000/oauth/token -F grant_type=authorization_code -F scope=profile -F code=${code})
+# Get access token
+response=$(curl -s -u ${CLIENT_ID}:${CLIENT_SECRET} -XPOST http://127.0.0.1:5000/oauth/token -F grant_type=authorization_code -F scope=profile -F code=${code})
+echo "http://127.0.0.1:5000/oauth/token"
 echo "$response" | jq .
+access_token=$(echo "$response" | jq -r .access_token)
 
 # Get data
-access_token=$(echo "$response" | jq -r .access_token)
-response=$(curl -H "Authorization: Bearer ${access_token}" http://127.0.0.1:5000/api/me)
+
+response=$(curl -s -H "Authorization: Bearer ${access_token}" http://127.0.0.1:5000/api/me)
+echo "http://127.0.0.1:5000/api/me"
 echo "$response" | jq .
