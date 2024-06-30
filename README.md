@@ -8,6 +8,11 @@ This example in not meant to be particularly secure or robust. It is meant to be
 
 This server is heavily based on authlibs [example-oauth2-server](https://github.com/authlib/example-oauth2-server) thats under the BSD License for open source projects.
 
+While in development, you can set the `AUTHLIB_INSECURE_TRANSPORT` environment variable to disable HTTPS. This is useful for testing and development.
+```bash
+$ export AUTHLIB_INSECURE_TRANSPORT=1
+```
+
 ## Custom OAuth 2.0 Client
 
 ## Github OAuth2 Client
