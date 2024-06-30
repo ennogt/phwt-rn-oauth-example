@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Load variables from .env file
 if [ -f .env ]; then
   export $(grep -v '^#' .env | xargs)
@@ -22,7 +24,6 @@ echo "$response" | jq .
 access_token=$(echo "$response" | jq -r .access_token)
 
 # Get data
-
 response=$(curl -s -H "Authorization: Bearer ${access_token}" http://127.0.0.1:5000/api/me)
 echo "http://127.0.0.1:5000/api/me"
 echo "$response" | jq .
