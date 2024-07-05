@@ -11,8 +11,8 @@ PORT = 5040
 USERINFO_URL = 'http://127.0.0.1:5000/api/me'
 
 oauth = OAuth(app)
-auth = oauth.register(
-    name='customAuth',
+authServer = oauth.register(
+    name='authServer',
     client_id=os.environ.get('CLIENT_ID'),
     client_secret=os.environ.get('CLIENT_SECRET'),
     authorize_url='http://127.0.0.1:5000/oauth/authorize',
@@ -32,12 +32,12 @@ def homepage():
 @app.route('/login' , methods=['POST'])
 def login():
     redirect_uri = url_for('authorize', _external=True)
-    return auth.authorize_redirect(redirect_uri)
+    return authServer.authorize_redirect(redirect_uri)
 
 @app.route('/callback', methods=['GET'])
 def authorize():
-    token = auth.authorize_access_token()
-    resp = auth.get(USERINFO_URL)
+    token = authServer.authorize_access_token()
+    resp = authServer.get(USERINFO_URL)
     print(f"Response: {resp.json()}")
     user_info = resp.json()
     session['user'] = user_info
