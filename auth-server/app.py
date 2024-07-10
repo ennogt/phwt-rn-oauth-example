@@ -1,5 +1,7 @@
 from website.app import create_app
 
+import os
+os.environ["AUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 app = create_app({
     'SECRET_KEY': 'secret',

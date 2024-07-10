@@ -11,7 +11,7 @@ fi
 # Get authorization code
 auth_url="http://127.0.0.1:5000/oauth/authorize?response_type=code&client_id=${CLIENT_ID}&scope=profile&redirect_uri=${REDIRECT_URI}"
 echo "URL: $auth_url"
-open "$auth_url"
+python3 -m webbrowser "$auth_url"
 
 # Wait for the user to copy the code from the URL
 echo "Enter the code:"

@@ -7,7 +7,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.environ.get('FLASK_SECRET_KEY')
 
-PORT = 5040
+PORT = 5001
 USERINFO_URL = 'http://127.0.0.1:5000/api/me'
 
 oauth = OAuth(app)

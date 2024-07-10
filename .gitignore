@@ -12,5 +12,8 @@ __pycache__/
 # Database
 *.sqlite
 
+# Visual Studio Code
+.vscode/
+*.code-workspace
 
 
